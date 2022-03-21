@@ -1,6 +1,6 @@
 html {
   min-height: 100%;
-  position: relative;
+  overflow: visible;
 }
 
 .head-area{
@@ -15,7 +15,7 @@ html {
 
 .navbar-brand{
   font-weight: 900;
-  margin-left: 3.5rem;
+  margin-left: 3%;
   font-size: 2.5em;
 }
 
@@ -34,22 +34,26 @@ html {
 
 @media (max-width: 1380px) {
   .navbar-nav{
-      margin-left: 40%;
+    text-align: right;
+    margin-left: 40%;
   }
 }
 
 @media (max-width: 992px) {
   .navbar-nav{
-      margin-left: 80%;
+    padding-right: 2%;
+    text-align: right;
+    margin-left: 60%;
   }
 }
 
-.footer {
+footer {
+  margin-top: 20%;
+  margin-bottom: 0;
   color: white;
 	padding-top: 20px;
-	position: absolute;
+	padding-bottom: 20px;
 	text-align: center;
-	bottom: 0;
 	width: 100%;
   background-color: rgb(1, 63, 53);
   background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
