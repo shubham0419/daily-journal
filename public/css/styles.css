@@ -37,6 +37,12 @@ body{
   height: 100%;
 }
 
+/* compose */
+.btn{
+  margin-top: 10px;
+  background-color: rgb(1, 63, 53);
+  background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+}
 
 @media (max-width: 1380px) {
   .navbar-nav{
