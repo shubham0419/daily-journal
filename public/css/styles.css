@@ -3,11 +3,8 @@ html {
   overflow: visible;
 }
 
-body{ 
-  display:flex; 
-  flex-direction:column;
+body{
   background-image: url("https://www.transparenttextures.com/patterns/diagonal-noise.png");
-
 }
 
 .head-area{
@@ -64,6 +61,10 @@ footer {
 	width: 100%;
   background-color: rgb(1, 63, 53);
   background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+}
+
+.link-section{
+  margin: auto 5% auto auto;
 }
 
 .social-text{
