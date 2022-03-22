@@ -80,12 +80,18 @@ function(request, accessToken, refreshToken, profile, done) {
 ));
 
 app.get("/", function(req, res){
-  User.findById(req.user.id,function(err,foundUser){
-    res.render("home", {
+    if(req.isAuthenticated()){
+      User.findById(req.user.id,function(err,foundUser){
+    if(err){
+      res.render("login");
+    }else{res.render("home", {
     startingContent: homeStartingContent,
     posts: foundUser.blogs
-    });
+    });}
   });
+}else{
+    res.redirect("/login");
+  }
 });
 
 app.get("/contact", function(req, res){
