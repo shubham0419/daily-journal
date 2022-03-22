@@ -14,9 +14,9 @@ body{
 }
 
 .logo{
-  margin: auto 0 auto 5px;
+  margin-left: 5px;
   border-radius: 100%;
-  width: 100px;
+  width: 70px;
 }
 
 .navbar{
@@ -24,7 +24,8 @@ body{
 }
 
 .navbar-brand{
-  margin: 0;
+  padding-left: 0;
+  margin-left: 0;
   font-weight: 700;
   font-size: 200%;
 }
@@ -102,6 +103,10 @@ body{
   .navbar-nav{
     padding-right: 1%;
     text-align: right;
+  }
+
+  .navbar-brand{
+    font-size: 150%;
   }
 }
 
