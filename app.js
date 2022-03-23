@@ -158,7 +158,7 @@ app.post("/signUp",function(req,res){
             res.redirect("/signUp");
         }else{
             passport.authenticate("local")(req,res,function(){
-                res.redirect("/home");
+                res.redirect("/");
             });
         }
     })
@@ -176,7 +176,7 @@ app.post("/login",function(req,res){
             res.redirect("/login");
         }else{
             passport.authenticate("local")(req,res,function(){
-                res.redirect("/home");
+                res.redirect("/");
             });
         }
     });
