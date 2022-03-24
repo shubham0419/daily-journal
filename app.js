@@ -56,10 +56,10 @@ const User = mongoose.model("User",userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function(user,done){
+passport.serializeUser((user,done) => {
   done(null,user.id);
 });
-passport.deserializeUser(function(id,done){
+passport.deserializeUser((id,done) => {
   User.findById(id,function(err,user){
       done(err,user);
   });
@@ -73,40 +73,56 @@ passport.use(new GoogleStrategy({
   passReqToCallback: true
 },
 function(request, accessToken, refreshToken, profile, done) {
-  User.findOrCreate({ googleId: profile.id }, function (err, user) {
+  User.findOrCreate({ googleId: profile.id }, (err, user) => {
     return done(err, user);
   });
 }
 ));
 
-app.get("/", function(req, res){
-    if(req.isAuthenticated()){
-      User.findById(req.user.id,function(err,foundUser){
-    if(err){
-      res.render("login");
-    }else{res.render("home", {
-    startingContent: homeStartingContent,
-    posts: foundUser.blogs
-    });}
+app.get("/", (req,res)=>{
+  User.find({blog:{$ne:null}},function(err,foundUser){
+    if(!err){
+      if(foundUser){
+        res.render("home", {
+        startingContent: homeStartingContent,
+        users: foundUser
+        });
+      }
+    }else{console.log(err);
+    }
   });
-}else{
+});
+
+app.get("/myblog",(req,res)=>{
+  if(req.isAuthenticated()){
+    User.findById(req.user.id,function(err,foundUser){
+      if(err){
+      res.render("login");
+      }else{res.render("myBlog",{userBlogs:foundUser.blogs});
+    }
+  });
+  }else{
     res.redirect("/login");
   }
 });
 
-app.get("/contact", function(req, res){
+app.get("/contact", (req,res)=>{
   res.render("contact", {contactContent: contactContent});
 });
 
-app.get("/login",function(req,res){
+app.get("/about", (req,res)=>{
+  res.render("about", {aboutContent: contactContent});
+});
+
+app.get("/login",(req,res)=>{
   res.render("login",{method:"login",antimethod:"signUp"});
 });
 
-app.get("/signUp",function(req,res){
+app.get("/signUp",(req,res)=>{
   res.render("login",{method:"signUp",antimethod:"login"});
 });
 
-app.get("/compose", function(req, res){
+app.get("/compose", (req, res)=>{
   if(req.isAuthenticated()){
     res.render("compose");
 }else{
@@ -115,13 +131,13 @@ app.get("/compose", function(req, res){
 });
 
 
-app.post("/compose", function(req, res){
+app.post("/compose", (req, res)=>{
   const post = new Post({
     title: req.body.postTitle,
     content: req.body.postBody
   });
   post.save();
-  User.findById(req.user.id,function(err,foundUser){
+  User.findById(req.user.id,(err,foundUser)=>{
     foundUser.blogs.push(post);
     foundUser.save(function(err){
       if (!err){
@@ -134,14 +150,13 @@ app.post("/compose", function(req, res){
 app.get("/posts/:postId", function(req, res){
   const requestedPostId = req.params.postId;
 
-  Post.findOne({_id:requestedPostId},function(err,foundPost){
+  Post.findOne({_id:requestedPostId},(err,foundPost)=>{
     res.render("post", {
       title: foundPost.title,
       content: foundPost.content
     });
   }); 
 });
-
 
 app.get("/auth/google",
   passport.authenticate("google", { scope:["profile"] }
@@ -151,35 +166,40 @@ app.get("/auth/google/personal-blog",
     passport.authenticate("google",{failureRedirect:"/login",successRedirect:"/"}
 ));
 
-app.post("/signUp",function(req,res){
-    User.register({username:req.body.username}, req.body.password,function(err,user){
+app.post("/signUp",(req,res) => {
+    User.register({username:req.body.username}, req.body.password,(err,user)=>{
         if(err){
             console.log(err);
             res.redirect("/signUp");
         }else{
-            passport.authenticate("local")(req,res,function(){
-                res.redirect("/");
+            passport.authenticate("local"),((req,res)=>{
+              res.redirect("/");
             });
         }
     })
 });
 
-app.post("/login",function(req,res){
+app.post("/login",(req,res) => {
     const newUser = new User({
         email:req.body.username,
         password:req.body.password
     });
 
-    req.login(newUser,function(err){
-        if(err){
-            console.log(err);
-            res.redirect("/login");
-        }else{
-            passport.authenticate("local")(req,res,function(){
-                res.redirect("/");
-            });
-        }
+    req.login(newUser,(err) => {
+      if(err){
+        console.log(err);
+        res.redirect("/login");
+    }else{
+        passport.authenticate("local")(req,res,function(){
+            res.redirect("/");
+        });
+    }
     });
+});
+
+app.get("/logout",(req,res) => {
+  req.logOut();
+  res.redirect("/");
 });
 
 
@@ -188,6 +208,6 @@ if (port == null || port == "") {
   port = 3000;
 }
 
-app.listen(port, function() {
+app.listen(port, () =>  {
   console.log("Server started on port 3000");
 });
