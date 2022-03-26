@@ -158,13 +158,13 @@ app.get("/posts/:postId", function(req, res){
   }); 
 });
 
-app.get("/auth/google",
-  passport.authenticate("google", { scope:["profile"] }
-));
+// app.get("/auth/google",
+//   passport.authenticate("google", { scope:["profile"] }
+// ));
 
-app.get("/auth/google/personal-blog",
-    passport.authenticate("google",{failureRedirect:"/login",successRedirect:"/"}
-));
+// app.get("/auth/google/personal-blog",
+//     passport.authenticate("google",{failureRedirect:"/login",successRedirect:"/"}
+// ));
 
 app.post("/signUp",(req,res) => {
     User.register({username:req.body.username}, req.body.password,(err,user)=>{
