@@ -172,9 +172,13 @@ app.post("/signUp",(req,res) => {
             console.log(err);
             res.redirect("/signUp");
         }else{
-            passport.authenticate("local"),((req,res)=>{
+          passport.authenticate("local")(req,res,function(err){
+            if(err){
+              res.redirect("/login");
+            }else{
               res.redirect("/");
-            });
+            }
+          });
         }
     })
 });
@@ -190,8 +194,12 @@ app.post("/login",(req,res) => {
         console.log(err);
         res.redirect("/login");
     }else{
-        passport.authenticate("local")(req,res,function(){
+        passport.authenticate("local")(req,res,function(err){
+          if(err){
+            res.redirect("/login");
+          }else{
             res.redirect("/");
+          }
         });
     }
     });
